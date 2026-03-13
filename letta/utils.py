@@ -618,7 +618,7 @@ def annotate_message_json_list_with_tool_calls(messages: list[dict], allow_tool_
             # We should have a new tool call id in the buffer
             if tool_call_id is None:
                 # raise ValueError(
-                print(
+                logger.debug(
                     f"Got a function call role, but did not have a saved tool_call_id ready to use (i={i}, total={len(messages)}):\n{messages[:i]}\n{message}"
                 )
                 # allow a soft fail in this case
@@ -669,7 +669,7 @@ def annotate_message_json_list_with_tool_calls(messages: list[dict], allow_tool_
             # We should have a new tool call id in the buffer
             if tool_call_id is None:
                 # raise ValueError(
-                print(
+                logger.debug(
                     f"Got a tool call role, but did not have a saved tool_call_id ready to use (i={i}, total={len(messages)}):\n{messages[:i]}\n{message}"
                 )
                 # allow a soft fail in this case
@@ -834,7 +834,7 @@ class OpenAIBackcompatUnpickler(pickle.Unpickler):
 #    try:
 #        encoding = tiktoken.encoding_for_model(model)
 #    except KeyError:
-#        print("Falling back to cl100k base for token counting.")
+#        logger.debug("Falling back to cl100k base for token counting.")
 #        encoding = tiktoken.get_encoding("cl100k_base")
 #    return len(encoding.encode(s))
 
@@ -860,7 +860,7 @@ def parse_json(string) -> dict:
             raise ValueError(f"JSON from string input ({string}) is not a dictionary (type {type(result)}): {result}")
         return result
     except Exception as e:
-        print(f"Error parsing json with json package, falling back to demjson: {e}")
+        logger.debug(f"Error parsing json with json package, falling back to demjson: {e}")
 
     try:
         result = demjson.decode(string)
@@ -868,7 +868,7 @@ def parse_json(string) -> dict:
             raise ValueError(f"JSON from string input ({string}) is not a dictionary (type {type(result)}): {result}")
         return result
     except demjson.JSONDecodeError as e:
-        print(f"Error parsing json with demjson package (fatal): {e}")
+        logger.debug(f"Error parsing json with demjson package (fatal): {e}")
         raise e
 
 
